@@ -14,6 +14,9 @@ function isDuplicateTask(text) {
 }
 
 function renderTasks(taskArray){
+    function saveTasks(){
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
     taskList.innerHTML = "";
 
     taskArray.forEach(task => {
@@ -47,7 +50,7 @@ form.addEventListener("submit", function(e){
 
     if(taskText.length < 3){
         alert("La tarea debe tener al menos 3 caracteres.");
-        input.focus();
+        taskInput.focus();
         return;
     }
 
@@ -59,7 +62,7 @@ form.addEventListener("submit", function(e){
 
     if(isDuplicateTask(taskText)){
         alert("Esta tarea ya existe.");
-        input.focus();
+        taskInput.focus();
         return;
     }
 
@@ -70,7 +73,7 @@ form.addEventListener("submit", function(e){
 
     createTask(task); // guarda automáticamente en tasks y storage
     form.reset();
-    input.focus();
+    taskInput.focus();
 });
 
 // Crear tarea en el DOM
@@ -125,12 +128,4 @@ searchInput.addEventListener("input", function() {
  */
 function filterCompletedTasks(taskArray) {
     return taskArray.filter(task => task.completed === true);
-}
-
-function renderTasks(taskArray){
-    taskList.innerHTML = "";
-
-    taskArray.forEach(task => {
-        createTask(task, false);
-    });
 }
