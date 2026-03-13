@@ -13,10 +13,11 @@ function isDuplicateTask(text) {
     return tasks.some(task => task.text.toLowerCase() === normalizedText);
 }
 
+function saveTasks(){
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
 function renderTasks(taskArray){
-    function saveTasks(){
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
     taskList.innerHTML = "";
 
     taskArray.forEach(task => {
@@ -44,7 +45,7 @@ form.addEventListener("submit", function(e){
     // Validaciones básicas
     if(taskText === ""){
         alert("Por favor, ingresa una tarea.");
-        input.focus();
+        taskInput.focus();
         return;
     }
 
