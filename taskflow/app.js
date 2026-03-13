@@ -31,7 +31,7 @@ form.addEventListener("submit", function(e){
     };
 
     createTask(task); // guarda automáticamente en tasks y storage
-    input.value = "";
+    taskInput.value = "";
 });
 
 // Crear tarea en el DOM
@@ -69,7 +69,7 @@ function createTask(task, saveToStorage = true){
     li.appendChild(span);
     li.appendChild(editBtn);
     li.appendChild(deleteBtn);
-    
+
     taskList.appendChild(li);
 
     if(saveToStorage){
