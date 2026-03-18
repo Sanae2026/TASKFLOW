@@ -6,6 +6,7 @@ const priority = document.getElementById("task-priority");
 const searchInput = document.getElementById("search");
 const taskCounter = document.getElementById("task-counter");
 const sortButton = document.getElementById("sort-tasks");
+const filterPriority = document.getElementById("filter-priority");
 
 let tasks = [];
 
@@ -141,5 +142,22 @@ sortButton.addEventListener("click", function(){
     taskList.innerHTML = "";
 
     tasks.forEach(task => createTask(task, false));
+
+});
+
+// FILTRAR POR PRIORIDAD
+filterPriority.addEventListener("change", function(){
+
+    const selected = filterPriority.value;
+
+    taskList.innerHTML = "";
+
+    let filteredTasks = tasks;
+
+    if(selected !== "all"){
+        filteredTasks = tasks.filter(task => task.priority === selected);
+    }
+
+    filteredTasks.forEach(task => createTask(task, false));
 
 });
