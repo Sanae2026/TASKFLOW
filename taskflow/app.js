@@ -62,65 +62,106 @@ form.addEventListener("submit", function(e){
 // Crear tarea en el DOM
 function createTask(task, saveToStorage = true){
 
-    const li = document.createElement("li");
-    li.classList.add(task.priority);
+const li = document.createElement("li");
 
-    // CONTENEDOR DE TEXTO
-    const taskContainer = document.createElement("div");
-    taskContainer.classList.add("task-container");
+li.className = "flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-3 rounded shadow";
 
-    const taskText = document.createElement("span");
-    taskText.textContent = task.text;
+const taskContainer = document.createElement("div");
+taskContainer.className = "flex flex-col";
 
-    const priorityLabel = document.createElement("span");
-    priorityLabel.classList.add("priority-label", task.priority);
-    priorityLabel.textContent = task.priority;
+const taskText = document.createElement("span");
+taskText.textContent = task.text;
+taskText.className = "text-gray-800 dark:text-white font-medium";
 
-    taskContainer.appendChild(taskText);
-    taskContainer.appendChild(priorityLabel);
+const priorityLabel = document.createElement("span");
 
-    // Botón editar
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Editar";
+priorityLabel.textContent = task.priority;
 
-    editBtn.addEventListener("click", function(){
+let color = "";
 
-        const newText = prompt("Editar tarea:", task.text);
+if(task.priority === "alta"){
+color = "bg-red-500";
+}
 
-        if(newText && newText.trim() !== ""){
-            task.text = newText.trim();
-            taskText.textContent = task.text;
-            saveTasks();
-        }
+if(task.priority === "media"){
+color = "bg-yellow-400 text-black";
+}
 
-    });
+if(task.priority === "baja"){
+color = "bg-green-500";
+}
 
-    // Botón eliminar
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Eliminar";
+priorityLabel.className =
+"text-xs text-white px-2 py-1 rounded w-fit mt-1 " + color;
 
-    deleteBtn.addEventListener("click", function(){
+taskContainer.appendChild(taskText);
+taskContainer.appendChild(priorityLabel);
 
-        li.remove();
-        tasks = tasks.filter(t => t.text !== task.text);
-        saveTasks();
-        updateCounter();
+const buttons = document.createElement("div");
+buttons.className = "flex gap-2";
 
-    });
+// BOTÓN COMPLETAR
+const completeBtn = document.createElement("button");
+completeBtn.textContent = "✔";
 
-    li.appendChild(taskContainer);
-    li.appendChild(editBtn);
-    li.appendChild(deleteBtn);
+completeBtn.className =
+"bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600";
 
-    taskList.appendChild(li);
+completeBtn.addEventListener("click", function(){
+li.classList.toggle("opacity-50");
+});
 
-    if(saveToStorage){
+// BOTÓN EDITAR
+const editBtn = document.createElement("button");
+editBtn.textContent = "Editar";
 
-        tasks.push(task);
-        saveTasks();
-        updateCounter();
+editBtn.className =
+"bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600";
 
-    }
+editBtn.addEventListener("click", function(){
+
+const newText = prompt("Editar tarea:", task.text);
+
+if(newText && newText.trim() !== ""){
+task.text = newText.trim();
+taskText.textContent = task.text;
+saveTasks();
+}
+
+});
+
+// BOTÓN ELIMINAR
+const deleteBtn = document.createElement("button");
+deleteBtn.textContent = "Eliminar";
+
+deleteBtn.className =
+"bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600";
+
+deleteBtn.addEventListener("click", function(){
+
+li.remove();
+tasks = tasks.filter(t => t.text !== task.text);
+saveTasks();
+updateCounter();
+
+});
+
+buttons.appendChild(completeBtn);
+buttons.appendChild(editBtn);
+buttons.appendChild(deleteBtn);
+
+li.appendChild(taskContainer);
+li.appendChild(buttons);
+
+taskList.appendChild(li);
+
+if(saveToStorage){
+
+tasks.push(task);
+saveTasks();
+updateCounter();
+
+}
 
 }
 
