@@ -65,8 +65,19 @@ function createTask(task, saveToStorage = true){
     const li = document.createElement("li");
     li.classList.add(task.priority);
 
-    const span = document.createElement("span");
-    span.textContent = task.text + " (" + task.priority + ")";
+    // CONTENEDOR DE TEXTO
+    const taskContainer = document.createElement("div");
+    taskContainer.classList.add("task-container");
+
+    const taskText = document.createElement("span");
+    taskText.textContent = task.text;
+
+    const priorityLabel = document.createElement("span");
+    priorityLabel.classList.add("priority-label");
+    priorityLabel.textContent = task.priority;
+
+    taskContainer.appendChild(taskText);
+    taskContainer.appendChild(priorityLabel);
 
     // Botón editar
     const editBtn = document.createElement("button");
@@ -78,7 +89,7 @@ function createTask(task, saveToStorage = true){
 
         if(newText && newText.trim() !== ""){
             task.text = newText.trim();
-            span.textContent = task.text + " (" + task.priority + ")";
+            taskText.textContent = task.text;
             saveTasks();
         }
 
@@ -97,7 +108,7 @@ function createTask(task, saveToStorage = true){
 
     });
 
-    li.appendChild(span);
+    li.appendChild(taskContainer);
     li.appendChild(editBtn);
     li.appendChild(deleteBtn);
 
