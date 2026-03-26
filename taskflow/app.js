@@ -16,33 +16,33 @@ let tasks = [];
 
 // Guardar tareas
 function saveTasks(){
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 // Actualizar contador
 function updateCounter(){
 
-    const pending = tasks.filter(t => !t.completed).length;
+const pending = tasks.filter(t => !t.completed).length;
 
-    taskCounter.textContent =
-        "Pendientes: " + pending + " | Total: " + tasks.length;
+taskCounter.textContent =
+"Pendientes: " + pending + " | Total: " + tasks.length;
 
 }
 
 // Cargar tareas
 function loadTasks(){
 
-    const savedTasks = localStorage.getItem("tasks");
+const savedTasks = localStorage.getItem("tasks");
 
-    if(savedTasks){
+if(savedTasks){
 
-        tasks = JSON.parse(savedTasks);
+tasks = JSON.parse(savedTasks);
 
-        tasks.forEach(task => createTask(task, false));
+tasks.forEach(task => createTask(task, false));
 
-        updateCounter();
+updateCounter();
 
-    }
+}
 
 }
 
@@ -51,21 +51,21 @@ document.addEventListener("DOMContentLoaded", loadTasks);
 // Añadir tarea
 form.addEventListener("submit", function(e){
 
-    e.preventDefault();
+e.preventDefault();
 
-    const taskText = taskInput.value.trim();
+const taskText = taskInput.value.trim();
 
-    if(taskText === "") return;
+if(taskText === "") return;
 
-    const task = {
-        text: taskText,
-        priority: priority.value,
-        completed: false
-    };
+const task = {
+text: taskText,
+priority: priority.value,
+completed: false
+};
 
-    createTask(task);
+createTask(task);
 
-    taskInput.value = "";
+taskInput.value = "";
 
 });
 
@@ -74,7 +74,8 @@ function createTask(task, saveToStorage = true){
 
 const li = document.createElement("li");
 
-li.className = "flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-3 rounded shadow";
+li.className =
+"flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-gray-100 dark:bg-gray-700 p-3 rounded shadow";
 
 if(task.completed){
 li.classList.add("opacity-50");
@@ -112,14 +113,14 @@ taskContainer.appendChild(taskText);
 taskContainer.appendChild(priorityLabel);
 
 const buttons = document.createElement("div");
-buttons.className = "flex gap-2";
+buttons.className = "flex gap-2 flex-wrap";
 
-// BOTÓN COMPLETAR
+// completar
 const completeBtn = document.createElement("button");
 completeBtn.textContent = "✔";
 
 completeBtn.className =
-"bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600";
+"bg-blue-500 text-white px-3 py-2 text-sm rounded hover:bg-blue-600";
 
 completeBtn.addEventListener("click", function(){
 
@@ -132,12 +133,12 @@ updateCounter();
 
 });
 
-// BOTÓN EDITAR
+// editar
 const editBtn = document.createElement("button");
 editBtn.textContent = "Editar";
 
 editBtn.className =
-"bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600";
+"bg-yellow-500 text-white px-3 py-2 text-sm rounded hover:bg-yellow-600";
 
 editBtn.addEventListener("click", function(){
 
@@ -151,12 +152,12 @@ saveTasks();
 
 });
 
-// BOTÓN ELIMINAR
+// eliminar
 const deleteBtn = document.createElement("button");
 deleteBtn.textContent = "Eliminar";
 
 deleteBtn.className =
-"bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600";
+"bg-red-500 text-white px-3 py-2 text-sm rounded hover:bg-red-600";
 
 deleteBtn.addEventListener("click", function(){
 
@@ -188,7 +189,7 @@ updateCounter();
 
 }
 
-// BÚSQUEDA
+// búsqueda
 searchInput.addEventListener("input", function(){
 
 const searchTerm = searchInput.value.toLowerCase();
@@ -203,7 +204,7 @@ filteredTasks.forEach(task => createTask(task, false));
 
 });
 
-// ORDENAR POR PRIORIDAD
+// ordenar
 sortButton.addEventListener("click", function(){
 
 const order = {
@@ -220,7 +221,7 @@ tasks.forEach(task => createTask(task, false));
 
 });
 
-// FILTRAR POR PRIORIDAD
+// filtro prioridad
 filterPriority.addEventListener("change", function(){
 
 const selected = filterPriority.value;
@@ -237,7 +238,7 @@ filteredTasks.forEach(task => createTask(task, false));
 
 });
 
-// FILTRAR POR ESTADO
+// filtro estado
 filterStatus.addEventListener("change", function(){
 
 const status = filterStatus.value;
@@ -258,7 +259,7 @@ filteredTasks.forEach(task => createTask(task, false));
 
 });
 
-// MARCAR TODAS COMPLETADAS
+// completar todas
 completeAllBtn.addEventListener("click", function(){
 
 tasks.forEach(task => task.completed = true);
@@ -273,7 +274,7 @@ updateCounter();
 
 });
 
-// BORRAR COMPLETADAS
+// borrar completadas
 deleteCompletedBtn.addEventListener("click", function(){
 
 tasks = tasks.filter(task => !task.completed);
