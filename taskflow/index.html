@@ -14,11 +14,30 @@ darkMode: 'class'
 }
 </script>
 
+<style>
+/* Marca de agua */
+.watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 5rem;
+    color: rgba(0,0,0,0.05);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    white-space: nowrap;
+}
+</style>
+
 </head>
 
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex justify-center items-start pt-4 sm:pt-10 px-3">
 
-<div class="w-full max-w-2xl bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md">
+<!-- Marca de agua -->
+<div class="watermark">Sanae 2026</div>
+
+<div class="w-full max-w-2xl bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md relative z-10">
 
 <h1 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">
 Mis Tareas
