@@ -15,10 +15,9 @@ const statsTotal = document.getElementById("stats-total");
 const statsPending = document.getElementById("stats-pending");
 const statsCompleted = document.getElementById("stats-completed");
 
-// Lista de tareas
 let tasks = [];
 
-// Guardar tareas en localStorage
+// Guardar tareas
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
@@ -33,7 +32,7 @@ function updateStats() {
     statsCompleted.textContent = "Completadas: " + completed;
 }
 
-// Cargar tareas desde localStorage
+// Cargar tareas
 function loadTasks() {
     const savedTasks = localStorage.getItem("tasks");
     if (savedTasks) {
@@ -46,17 +45,11 @@ function loadTasks() {
 document.addEventListener("DOMContentLoaded", loadTasks);
 
 // Añadir nueva tarea
-form.addEventListener("submit", function(e) {
+form.addEventListener("submit", e => {
     e.preventDefault();
     const text = taskInput.value.trim();
     if (!text) return;
-
-    const task = {
-        text,
-        priority: priority.value,
-        completed: false
-    };
-
+    const task = { text, priority: priority.value, completed: false };
     createTask(task);
     taskInput.value = "";
 });
@@ -65,11 +58,11 @@ form.addEventListener("submit", function(e) {
 function createTask(task, saveToStorage = true) {
     const li = document.createElement("li");
     li.className = "flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-gray-100 dark:bg-gray-700 p-3 rounded shadow break-words";
-    if (task.completed) li.classList.add("opacity-50");
+    if(task.completed) li.classList.add("opacity-50");
 
-    // Contenedor de texto y prioridad
+    // Contenedor de texto
     const container = document.createElement("div");
-    container.className = "flex flex-col break-words";
+    container.className = "flex flex-col break-words max-w-full";
 
     const span = document.createElement("span");
     span.textContent = task.text;
@@ -77,22 +70,17 @@ function createTask(task, saveToStorage = true) {
 
     const label = document.createElement("span");
     label.textContent = task.priority;
-
-    let color = "";
-    if (task.priority === "alta") color = "bg-red-500";
-    if (task.priority === "media") color = "bg-yellow-400 text-black";
-    if (task.priority === "baja") color = "bg-green-500";
-
+    let color = task.priority === "alta" ? "bg-red-500" :
+                task.priority === "media" ? "bg-yellow-400 text-black" : "bg-green-500";
     label.className = "text-xs text-white px-2 py-1 rounded w-fit mt-1 " + color;
 
     container.appendChild(span);
     container.appendChild(label);
 
-    // Botones de acción
+    // Botones
     const buttons = document.createElement("div");
     buttons.className = "flex gap-2 flex-wrap";
 
-    // Botón completar
     const completeBtn = document.createElement("button");
     completeBtn.textContent = "✔";
     completeBtn.className = "bg-blue-500 text-white px-3 py-2 text-sm rounded hover:bg-blue-600";
@@ -103,7 +91,6 @@ function createTask(task, saveToStorage = true) {
         updateStats();
     });
 
-    // Botón editar
     const editBtn = document.createElement("button");
     editBtn.textContent = "Editar";
     editBtn.className = "bg-yellow-500 text-white px-3 py-2 text-sm rounded hover:bg-yellow-600";
@@ -117,7 +104,6 @@ function createTask(task, saveToStorage = true) {
         }
     });
 
-    // Botón eliminar
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Eliminar";
     deleteBtn.className = "bg-red-500 text-white px-3 py-2 text-sm rounded hover:bg-red-600";
@@ -136,35 +122,32 @@ function createTask(task, saveToStorage = true) {
     li.appendChild(buttons);
     taskList.appendChild(li);
 
-    if (saveToStorage) {
+    if(saveToStorage){
         tasks.push(task);
         saveTasks();
         updateStats();
     }
 }
 
-// Funciones de filtrado y orden
+// Filtros y orden alfabético
 searchInput.addEventListener("input", applyFilters);
 filterPriority.addEventListener("change", applyFilters);
 filterStatus.addEventListener("change", applyFilters);
 sortAlpha.addEventListener("change", applyFilters);
 
-// Ordenar por prioridad
 sortButton.addEventListener("click", () => {
-    const order = { alta: 1, media: 2, baja: 3 };
-    tasks.sort((a, b) => order[a.priority] - order[b.priority]);
+    const order = { alta:1, media:2, baja:3 };
+    tasks.sort((a,b)=>order[a.priority]-order[b.priority]);
     applyFilters();
 });
 
-// Marcar todas como completadas
 completeAllBtn.addEventListener("click", () => {
-    tasks.forEach(t => t.completed = true);
+    tasks.forEach(t => t.completed=true);
     saveTasks();
     applyFilters();
     updateStats();
 });
 
-// Borrar tareas completadas
 deleteCompletedBtn.addEventListener("click", () => {
     tasks = tasks.filter(t => !t.completed);
     saveTasks();
@@ -172,7 +155,6 @@ deleteCompletedBtn.addEventListener("click", () => {
     updateStats();
 });
 
-// Aplicar filtros y orden alfabético
 function applyFilters() {
     const term = searchInput.value.toLowerCase();
     const status = filterStatus.value;
@@ -181,16 +163,16 @@ function applyFilters() {
 
     let filtered = tasks.filter(task => {
         let ok = true;
-        if (term) ok = task.text.toLowerCase().includes(term);
-        if (ok && status !== "all") ok = (status === "pending") ? !task.completed : task.completed;
-        if (ok && prio !== "all") ok = task.priority === prio;
+        if(term) ok = task.text.toLowerCase().includes(term);
+        if(ok && status !== "all") ok = status==="pending" ? !task.completed : task.completed;
+        if(ok && prio !== "all") ok = task.priority===prio;
         return ok;
     });
 
-    if (alpha === "asc") filtered.sort((a, b) => a.text.localeCompare(b.text));
-    if (alpha === "desc") filtered.sort((a, b) => b.text.localeCompare(a.text));
+    if(alpha==="asc") filtered.sort((a,b)=>a.text.localeCompare(b.text));
+    if(alpha==="desc") filtered.sort((a,b)=>b.text.localeCompare(a.text));
 
-    taskList.innerHTML = "";
-    filtered.forEach(task => createTask(task, false));
+    taskList.innerHTML="";
+    filtered.forEach(task => createTask(task,false));
     updateStats();
 }
