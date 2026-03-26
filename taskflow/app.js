@@ -1,4 +1,4 @@
-// Variables del DOM
+// Variables
 const form = document.getElementById("task-form");
 const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
@@ -44,7 +44,7 @@ function loadTasks() {
 
 document.addEventListener("DOMContentLoaded", loadTasks);
 
-// Añadir nueva tarea
+// Añadir tarea
 form.addEventListener("submit", e => {
     e.preventDefault();
     const text = taskInput.value.trim();
@@ -54,13 +54,12 @@ form.addEventListener("submit", e => {
     taskInput.value = "";
 });
 
-// Crear tarea en el DOM
+// Crear tarea
 function createTask(task, saveToStorage = true) {
     const li = document.createElement("li");
-    li.className = "flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 bg-gray-100 dark:bg-gray-700 p-3 rounded shadow break-words";
+    li.className = "flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 bg-gray-100 dark:bg-gray-700 p-3 rounded shadow";
     if(task.completed) li.classList.add("opacity-50");
 
-    // Contenedor de texto
     const container = document.createElement("div");
     container.className = "flex flex-col break-words max-w-full";
 
@@ -77,9 +76,8 @@ function createTask(task, saveToStorage = true) {
     container.appendChild(span);
     container.appendChild(label);
 
-    // Botones
     const buttons = document.createElement("div");
-    buttons.className = "flex gap-2 flex-wrap";
+    buttons.className = "flex gap-2 flex-wrap justify-start";
 
     const completeBtn = document.createElement("button");
     completeBtn.textContent = "✔";
