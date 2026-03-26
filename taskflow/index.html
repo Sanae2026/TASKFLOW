@@ -9,35 +9,14 @@
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
-tailwind.config = {
-darkMode: 'class'
-}
+tailwind.config = { darkMode: 'class' }
 </script>
-
-<style>
-/* Marca de agua */
-.watermark {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    font-size: 5rem;
-    color: rgba(0,0,0,0.05);
-    pointer-events: none;
-    user-select: none;
-    z-index: 0;
-    white-space: nowrap;
-}
-</style>
 
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex justify-center items-start pt-4 sm:pt-10 px-3">
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col items-center pt-4 sm:pt-10 px-3">
 
-<!-- Marca de agua -->
-<div class="watermark">Sanae 2026</div>
-
-<div class="w-full max-w-2xl bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md relative z-10">
+<div class="w-full max-w-2xl bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md">
 
 <h1 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-4">
 Mis Tareas
@@ -50,118 +29,82 @@ Modo oscuro
 
 <form id="task-form" class="flex flex-col sm:flex-row gap-2 mb-4">
 
-<input
-type="text"
-id="task-input"
-placeholder="Nueva tarea..."
-required
-class="w-full sm:flex-1 border rounded p-2 dark:bg-gray-700 dark:text-white">
+<input type="text" id="task-input" placeholder="Nueva tarea..."
+required class="w-full sm:flex-1 border rounded p-2 dark:bg-gray-700 dark:text-white">
 
-<select
-id="task-priority"
-class="border rounded p-2 dark:bg-gray-700 dark:text-white">
-
+<select id="task-priority" class="border rounded p-2 dark:bg-gray-700 dark:text-white">
 <option value="baja">Baja</option>
 <option value="media">Media</option>
 <option value="alta">Alta</option>
-
 </select>
 
-<button
-type="submit"
-class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+<button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
 Añadir
 </button>
-
 </form>
 
-<input
-type="text"
-id="search"
-placeholder="Buscar tarea..."
+<input type="text" id="search" placeholder="Buscar tarea..."
 class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white">
 
-<select
-id="filter-status"
-class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white">
-
+<select id="filter-status" class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white">
 <option value="all">Todas</option>
 <option value="pending">Pendientes</option>
 <option value="completed">Completadas</option>
-
 </select>
 
-<select
-id="filter-priority"
-class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white">
-
+<select id="filter-priority" class="w-full border rounded p-2 mb-4 dark:bg-gray-700 dark:text-white">
 <option value="all">Todas las prioridades</option>
 <option value="alta">Alta</option>
 <option value="media">Media</option>
 <option value="baja">Baja</option>
-
 </select>
 
-<button
-id="sort-tasks"
-class="w-full bg-blue-500 text-white py-2 px-3 rounded hover:bg-blue-600 mb-2">
+<button id="sort-tasks" class="w-full bg-blue-500 text-white py-2 px-3 rounded hover:bg-blue-600 mb-2">
 Ordenar por prioridad
 </button>
 
-<button
-id="complete-all"
-class="w-full bg-green-600 text-white py-2 px-3 rounded hover:bg-green-700 mb-2">
+<button id="complete-all" class="w-full bg-green-600 text-white py-2 px-3 rounded hover:bg-green-700 mb-2">
 Marcar todas como completadas
 </button>
 
-<button
-id="delete-completed"
-class="w-full bg-red-600 text-white py-2 px-3 rounded hover:bg-red-700 mb-4">
+<button id="delete-completed" class="w-full bg-red-600 text-white py-2 px-3 rounded hover:bg-red-700 mb-4">
 Borrar tareas completadas
 </button>
 
 <ul id="task-list" class="space-y-2"></ul>
 
 <div class="mt-4 border-t pt-3">
-<p
-id="task-counter"
-class="text-center text-gray-700 dark:text-gray-300">
+<p id="task-counter" class="text-center text-gray-700 dark:text-gray-300">
 Pendientes: 0 | Total: 0
 </p>
 </div>
 
 </div>
 
+<!-- FOOTER / Marca de agua -->
+<footer class="w-full mt-6 text-center py-4 text-gray-400 dark:text-gray-500 text-sm">
+Sanae 2026
+</footer>
+
 <script src="app.js"></script>
 
 <script>
-
 const darkToggle = document.getElementById("dark-toggle");
 
 function loadDarkMode(){
-
-const darkMode = localStorage.getItem("darkMode");
-
-if(darkMode === "enabled"){
-document.documentElement.classList.add("dark");
+    const darkMode = localStorage.getItem("darkMode");
+    if(darkMode === "enabled") document.documentElement.classList.add("dark");
 }
-
-}
-
 loadDarkMode();
 
 darkToggle.addEventListener("click", function(){
-
-document.documentElement.classList.toggle("dark");
-
-if(document.documentElement.classList.contains("dark")){
-localStorage.setItem("darkMode","enabled");
-}else{
-localStorage.setItem("darkMode","disabled");
-}
-
+    document.documentElement.classList.toggle("dark");
+    if(document.documentElement.classList.contains("dark")){
+        localStorage.setItem("darkMode","enabled");
+    }else{
+        localStorage.setItem("darkMode","disabled");
+    }
 });
-
 </script>
 
 </body>
