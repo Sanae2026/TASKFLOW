@@ -3,8 +3,8 @@ let nextId = 1;
 
 const obtenerTodas = () => tasks;
 
-const crearTarea = ({ titulo, completada = false }) => {
-  const tarea = { id: nextId++, titulo, completada };
+const crearTarea = ({ titulo, prioridad = 'baja', completada = false }) => {
+  const tarea = { id: nextId++, titulo, prioridad, completada };
   tasks.push(tarea);
   return tarea;
 };

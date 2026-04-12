@@ -1,63 +1,78 @@
 # TaskFlow
 
-TaskFlow es una aplicación web sencilla para gestionar tareas diarias.  
-Permite añadir, editar, eliminar y organizar tareas con diferentes niveles de prioridad.
+## Descripcion
 
-El proyecto ha sido desarrollado utilizando **HTML, CSS y JavaScript**, aplicando además herramientas de **IA para mejorar el desarrollo, refactorización y documentación**.
+Aplicacion de gestion de tareas con frontend en HTML/CSS/JS y backend en Node.js con Express.
 
----
+## Arquitectura de carpetas
 
-# Características
+taskflow/
++-- index.html          Frontend principal
++-- style.css           Estilos
++-- api/
+�   +-- client.js       Capa de red del frontend
++-- docs/
+�   +-- backend-api.md  Documentacion de herramientas
++-- server/
+    +-- .env                Variables de entorno
+    +-- package.json
+    +-- src/
+        +-- index.js        Punto de entrada del servidor
+        +-- config/
+        �   +-- env.js      Validacion de variables de entorno
+        +-- routes/
+        �   +-- task.routes.js
+        +-- controllers/
+        �   +-- task.controller.js
+        +-- services/
+            +-- task.service.js
 
-- Añadir nuevas tareas
-- Eliminar tareas
-- Editar tareas existentes
-- Buscar tareas por texto
-- Ordenar tareas por prioridad
-- Filtrar tareas por prioridad
-- Guardado automático mediante localStorage
-- Contador de tareas
+## Como arrancar el proyecto
 
----
+### Backend
 
-# Tecnologías utilizadas
+cd server
+npm install
+npm run dev
 
-- HTML5
-- CSS3
-- JavaScript
-- Git y GitHub
-- Cursor IDE con asistencia de IA
+El servidor arranca en http://localhost:3000
 
----
+### Frontend
 
-# Instalación
+Abrir index.html con Live Server en VSCode.
 
-1. Clonar el repositorio:
+## Middlewares
 
-```bash
-git clone https://github.com/Sanae2026/taskflow.git
+- cors(): Permite que el frontend en un puerto distinto consuma la API sin que el navegador lo bloquee.
+- express.json(): Transforma el body de las peticiones HTTP de texto crudo a objeto JavaScript accesible en req.body.
+- loggerAcademico: Middleware personalizado que registra en consola el metodo, la ruta, el codigo de respuesta y el tiempo de procesamiento de cada peticion.
+- Error handler global: Middleware de 4 parametros que captura todos los errores no controlados. Devuelve 404 si la tarea no existe y 500 para cualquier otro error inesperado.
 
----
+## Endpoints de la API
 
-## Testing manual de la aplicación
+### GET /api/v1/tasks
+Obtiene todas las tareas.
 
-### Lista vacía
-Al abrir la aplicación por primera vez, la lista aparece vacía y las estadísticas muestran correctamente Total: 0, Pendientes: 0, Completadas: 0. La interfaz se renderiza sin errores.
+Respuesta 200:
+[
+  { id: 1, titulo: 'Estudiar Node', prioridad: 'alta', completada: false }
+]
 
-### Añadir tarea sin título
-Al intentar enviar el formulario con el campo vacío, el navegador bloquea el envío gracias al atributo `required`. No se crea ninguna tarea y no se produce ningún error.
+### POST /api/v1/tasks
+Crea una nueva tarea.
 
-### Tarea con título muy largo
-Se añadió una tarea con un texto de más de 200 caracteres. El texto se adapta correctamente dentro de su contenedor usando `word-break: break-word` y `overflow-wrap: anywhere`, sin desbordar ni romper el layout en ningún tamaño de pantalla.
+Body:
+{ titulo: 'Estudiar Node', prioridad: 'alta' }
 
-### Marcar tareas como completadas
-Se marcaron varias tareas como completadas pulsando el botón ✔. Cada tarea marcada reduce su opacidad visualmente. El contador de Pendientes disminuye y el de Completadas aumenta en tiempo real de forma correcta.
+Respuesta 201:
+{ id: 1, titulo: 'Estudiar Node', prioridad: 'alta', completada: false }
 
-### Eliminar tareas
-Se eliminaron varias tareas individualmente con el botón Eliminar. Las tareas desaparecen de la lista y las estadísticas se actualizan inmediatamente. También se probó el botón "Borrar tareas completadas", eliminando en bloque todas las completadas sin afectar a las pendientes.
+Respuesta 400 (titulo menor de 3 caracteres):
+{ error: 'El titulo debe tener al menos 3 caracteres.' }
 
-### Persistencia de datos al recargar
-Tras recargar la página, todas las tareas (incluyendo su estado de completada/pendiente y su prioridad) se recuperan correctamente desde `localStorage`. Las estadísticas también se restauran con los valores correctos.
+### DELETE /api/v1/tasks/:id
+Elimina una tarea por ID.
 
-### Resultado general
-Todas las pruebas superadas sin errores. La aplicación funciona de forma estable y predecible en todos los escenarios probados.
+Respuesta 204: sin body
+Respuesta 404 (ID no existe):
+{ error: 'Tarea no encontrada.' }
